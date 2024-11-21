@@ -8,7 +8,7 @@ app.use(express.static("public"));
 
 // Example API route
 app.get("/api/articles", (req, res) => {
-    res.json({ message: "Fetching all articles" });
+    res.json({ message: "Fetching all articles YOOO" });
 });
 
 // Catch-all route for static files
