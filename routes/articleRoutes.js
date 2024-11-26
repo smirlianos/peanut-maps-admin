@@ -6,4 +6,8 @@ router.get("/", articlesController.getArticles);
 
 router.get("/:id", articlesController.getArticleById);
 
+router.post("/save", articlesController.saveArticle);
+
+router.patch("/change-status", articlesController.updateStatus);
+
 module.exports = router;
