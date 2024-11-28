@@ -11,20 +11,12 @@ const transporter = nodemailer.createTransport({
     },
 });
 
-transporter.verify((error, success) => {
-    if (error) {
-        console.error("SMTP connection error:", error);
-    } else {
-        console.log("SMTP server is ready to send emails");
-    }
-});
-
-exports.sendEmail = async ({ to, subject, text, html }) => {
+exports.sendEmail = async ({ to, subject, text, html, from }) => {
     try {
         const info = await transporter.sendMail({
-            from: `"Your App Name" <${process.env.SMTP_USER}>`, // Sender address
+            from, // Sender address
             to, // Receiver
-            subject, // Subject line
+            subject: "Peanutmaps Contact Form", // Subject line
             text, // Plain text body
             html, // HTML body
         });
