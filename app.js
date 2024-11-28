@@ -1,6 +1,8 @@
 const express = require("express");
 const app = express();
 const articleRoutes = require("./routes/articleRoutes");
+const emailRoutes = require("./routes/emailRoutes");
+
 require("dotenv").config();
 
 const PORT = process.env.PORT || 3000;
@@ -10,6 +12,7 @@ app.use(express.static("public"));
 
 // API routes
 app.use("/api/articles", articleRoutes);
+app.use("/api/emails", emailRoutes);
 
 // Catch-all for serving index.html
 app.get("*", (req, res) => {
