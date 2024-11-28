@@ -11,9 +11,8 @@ exports.sendTestEmail = async (req, res) => {
     }
 
     try {
+        await sendEmail({ to, subject, text, html });
         res.status(200).json({ message: "Email sent successfully" });
-        //await sendEmail({ to, subject, text, html });
-        //res.status(200).json({ message: "Email sent successfully" });
     } catch (error) {
         res.status(500).json({ error: "Failed to send email" });
     }
