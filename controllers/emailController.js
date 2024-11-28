@@ -41,6 +41,17 @@ exports.sendTimestaff = async (req, res) => {
             text: "",
             html: "<p>HERE IT IS</p>",
         });
+
+        await sendEmail({
+            from: "info@peanutmaps.com",
+            to: "info@peanutmaps.com",
+            subject: "New Subscriber",
+            text: "",
+            html: `<p>New Subscriber:<br>${email}</p>`,
+        });
+
+        //add email to mailchimp list
+
         res.status(200).json({ message: "Email sent successfully" });
     } catch (err) {
         res.status(500).json({ error: "Failed to send email" });
