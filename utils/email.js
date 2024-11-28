@@ -11,10 +11,10 @@ const transporter = nodemailer.createTransport({
     },
 });
 
-exports.sendEmail = async ({ text, html, from }) => {
+exports.sendEmail = async ({ text, html }) => {
     try {
         const info = await transporter.sendMail({
-            from, // Sender address
+            from: "info@peanutmaps.com", // Sender address
             to: "info@peanutmaps.com", // Receiver
             subject: "Peanutmaps Contact Form", // Subject line
             text, // Plain text body
