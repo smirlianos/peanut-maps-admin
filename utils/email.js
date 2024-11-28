@@ -11,33 +11,18 @@ const transporter = nodemailer.createTransport({
     },
 });
 
-exports.sendEmail = async ({ text, html }) => {
+exports.sendEmail = async ({ from, to, subject, text, html }) => {
     try {
         const info = await transporter.sendMail({
-            from: "info@peanutmaps.com", // Sender address
-            to: "info@peanutmaps.com", // Receiver
-            subject: "Peanutmaps Contact Form", // Subject line
+            from, // Sender address
+            to, // Receiver
+            subject, // Subject line
             text, // Plain text body
             html, // HTML body
         });
 
         console.log("Email sent: ", info.messageId);
         return info;
-    } catch (error) {
-        console.error("Error sending email: ", error);
-        throw error;
-    }
-};
-
-exports.sendTimeStaff = async ({ email }) => {
-    try {
-        const info = await transporter.sendMail({
-            from: "info@peanutmaps.com", // Sender address
-            to: email, // Receiver
-            subject: "Your PDF", // Subject line
-            text, // Plain text body
-            html: "HERE IS A PDF YOU MF",
-        });
     } catch (error) {
         console.error("Error sending email: ", error);
         throw error;

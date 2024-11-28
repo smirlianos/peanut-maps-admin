@@ -1,6 +1,7 @@
 const { sendEmail } = require("../utils/email");
+const { sendTimeStaff } = require("../utils/email");
 
-exports.sendTestEmail = async (req, res) => {
+exports.sendContactFormEmail = async (req, res) => {
     const { text, html } = req.body;
 
     if (!text && !html) {
@@ -10,7 +11,13 @@ exports.sendTestEmail = async (req, res) => {
     }
 
     try {
-        await sendEmail({ text, html });
+        await sendEmail({
+            from: "info@peanutmaps.com",
+            to: "info@peanutmaps.com",
+            subject: "Peanutmaps Contact Form",
+            text,
+            html,
+        });
         res.status(200).json({ message: "Email sent successfully" });
     } catch (error) {
         res.status(500).json({ error: "Failed to send email" });
@@ -27,7 +34,13 @@ exports.sendTimestaff = async (req, res) => {
     }
 
     try {
-        await sendTimeStaff({ email });
+        await sendEmail({
+            from: "info@peanutmaps.com",
+            to: email,
+            subject: "Your FREE Timestaff PDF!",
+            text: "",
+            html: "<p>HERE IT IS</p>",
+        });
         res.status(200).json({ message: "Email sent successfully" });
     } catch (err) {
         res.status(500).json({ error: "Failed to send email" });
