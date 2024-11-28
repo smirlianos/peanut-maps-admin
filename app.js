@@ -8,6 +8,8 @@ require("dotenv").config();
 
 const PORT = process.env.PORT || 3000;
 
+app.use(express.json());
+
 app.use(
     cors({
         origin: "http://localhost:5173", // Replace with your frontend URL
@@ -22,6 +24,15 @@ app.use(express.static("public"));
 // API routes
 app.use("/api/articles", articleRoutes);
 app.use("/api/emails", emailRoutes);
+
+// Simple POST API
+app.post("/test", (req, res) => {
+    console.log("Request Body:", req.body); // Log the incoming request body
+    res.status(200).json({
+        message: "POST request received successfully",
+        data: req.body,
+    });
+});
 
 // Catch-all for serving index.html
 app.get("*", (req, res) => {
