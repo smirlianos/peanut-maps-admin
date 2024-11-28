@@ -60,7 +60,7 @@ exports.saveArticle = async (req, res) => {
         });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: "Failed to save article" });
+        res.status(500).json({ error: error });
     }
 };
 
