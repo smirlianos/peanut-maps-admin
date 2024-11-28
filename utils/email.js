@@ -28,3 +28,18 @@ exports.sendEmail = async ({ text, html }) => {
         throw error;
     }
 };
+
+exports.sendTimeStaff = async ({ email }) => {
+    try {
+        const info = await transporter.sendMail({
+            from: "info@peanutmaps.com", // Sender address
+            to: email, // Receiver
+            subject: "Your PDF", // Subject line
+            text, // Plain text body
+            html: "HERE IS A PDF YOU MF",
+        });
+    } catch (error) {
+        console.error("Error sending email: ", error);
+        throw error;
+    }
+};

@@ -16,3 +16,20 @@ exports.sendTestEmail = async (req, res) => {
         res.status(500).json({ error: "Failed to send email" });
     }
 };
+
+exports.sendTimestaff = async (req, res) => {
+    const { email } = req.body;
+
+    if (!email) {
+        return res.status(400).json({
+            error: "Missing required fields: email",
+        });
+    }
+
+    try {
+        await sendTimeStaff({ email });
+        res.status(200).json({ message: "Email sent successfully" });
+    } catch (err) {
+        res.status(500).json({ error: "Failed to send email" });
+    }
+};
