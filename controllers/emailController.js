@@ -3,7 +3,7 @@ const { sendEmail } = require("../utils/email");
 exports.sendTestEmail = async (req, res) => {
     const { to, text, html, from } = req.body;
 
-    if (!to || !subject || (!text && !html)) {
+    if (!to || !from || (!text && !html)) {
         return res.status(400).json({
             error: "Missing required fields: to, subject, text or html",
         });
