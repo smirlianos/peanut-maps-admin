@@ -1,6 +1,7 @@
 const { sendEmail } = require("../utils/email");
 
 exports.sendTestEmail = async (req, res) => {
+    console.log(req.body);
     const { to, subject, text, html } = req.body;
 
     if (!to || !subject || (!text && !html)) {
