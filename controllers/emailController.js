@@ -65,14 +65,19 @@ exports.sendTimestaff = async (req, res) => {
             html: `<p>New Subscriber:<br>${email}</p><br><p>Name:<br>${name}</p>`,
         });
 
-        // Add subscriber to Mailchimp Audience
-        const response = await mailchimp.lists.addListMember(AUDIENCE_ID, {
-            email_address: email,
-            status: "subscribed",
-            merge_fields: {
-                FNAME: name,
-            },
-        });
+        // Add or update the subscriber in Mailchimp Audience
+        const subscriberHash = email.toLowerCase().trim();
+        const response = await mailchimp.lists.setListMember(
+            AUDIENCE_ID,
+            mailchimp.utils.md5(subscriberHash),
+            {
+                email_address: email,
+                status_if_new: "subscribed", // Add subscriber if new
+                merge_fields: {
+                    FNAME: name,
+                },
+            }
+        );
 
         console.log("Mailchimp Response:", response);
         res.status(200).json({ message: "Email sent successfully" });
