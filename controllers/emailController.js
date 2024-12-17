@@ -1,5 +1,16 @@
 const { sendEmail } = require("../utils/email");
 const { sendTimeStaff } = require("../utils/email");
+const mailchimp = require("@mailchimp/mailchimp_marketing");
+
+require("dotenv").config(); // Load environment variables
+
+// Configure Mailchimp SDK using environment variables
+mailchimp.setConfig({
+    apiKey: process.env.MAILCHIMP_API_KEY,
+    server: process.env.MAILCHIMP_SERVER_PREFIX,
+});
+
+const AUDIENCE_ID = process.env.MAILCHIMP_AUDIENCE_ID;
 
 exports.sendContactFormEmail = async (req, res) => {
     const { text, name, from } = req.body;
@@ -54,8 +65,16 @@ exports.sendTimestaff = async (req, res) => {
             html: `<p>New Subscriber:<br>${email}</p><br><p>Name:<br>${name}</p>`,
         });
 
-        //add email to mailchimp list
+        // Add subscriber to Mailchimp Audience
+        const response = await mailchimp.lists.addListMember(AUDIENCE_ID, {
+            email_address: email,
+            status: "subscribed",
+            merge_fields: {
+                FNAME: name,
+            },
+        });
 
+        console.log("Mailchimp Response:", response);
         res.status(200).json({ message: "Email sent successfully" });
     } catch (err) {
         res.status(500).json({ error: "Failed to send email" });
