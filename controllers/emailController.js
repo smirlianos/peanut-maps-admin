@@ -82,6 +82,6 @@ exports.sendTimestaff = async (req, res) => {
         console.log("Mailchimp Response:", response);
         res.status(200).json({ message: "Email sent successfully" });
     } catch (err) {
-        res.status(500).json({ error: "Failed to send email" });
+        res.status(500).json({ error: err });
     }
 };
