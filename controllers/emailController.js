@@ -2,9 +2,9 @@ const { sendEmail } = require("../utils/email");
 const { sendTimeStaff } = require("../utils/email");
 
 exports.sendContactFormEmail = async (req, res) => {
-    const { text, html } = req.body;
+    const { text, name, from } = req.body;
 
-    if (!text && !html) {
+    if (!text) {
         return res.status(400).json({
             error: "Missing required fields: to, subject, text or html",
         });
@@ -14,9 +14,9 @@ exports.sendContactFormEmail = async (req, res) => {
         await sendEmail({
             from: "info@peanutmaps.com",
             to: "info@peanutmaps.com",
-            subject: "Peanutmaps Contact Form",
-            text,
-            html,
+            subject: "New Message from Peanut's General Store contact form",
+            text: null,
+            html: `<h3>Name:</h3><br>${name}<br><br><h3>Email:</h3><br>${from}<br><br><h3>Message:</h3><br>${text}`,
         });
         res.status(200).json({ message: "Email sent successfully" });
     } catch (error) {
@@ -25,12 +25,16 @@ exports.sendContactFormEmail = async (req, res) => {
 };
 
 exports.sendTimestaff = async (req, res) => {
-    const { email } = req.body;
+    const { email, name } = req.body;
 
     if (!email) {
         return res.status(400).json({
             error: "Missing required fields: email",
         });
+    }
+
+    if (!name) {
+        name = "Adventurer";
     }
 
     try {
@@ -47,7 +51,7 @@ exports.sendTimestaff = async (req, res) => {
             to: "info@peanutmaps.com",
             subject: "New Subscriber",
             text: "",
-            html: `<p>New Subscriber:<br>${email}</p>`,
+            html: `<p>New Subscriber:<br>${email}</p><br><p>Name:<br>${name}</p>`,
         });
 
         //add email to mailchimp list
