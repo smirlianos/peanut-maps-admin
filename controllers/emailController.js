@@ -1,6 +1,7 @@
 const { sendEmail } = require("../utils/email");
 const { sendTimeStaff } = require("../utils/email");
 const mailchimp = require("@mailchimp/mailchimp_marketing");
+const crypto = require("crypto");
 
 require("dotenv").config(); // Load environment variables
 
@@ -65,11 +66,16 @@ exports.sendTimestaff = async (req, res) => {
             html: `<p>New Subscriber:<br>${email}</p><br><p>Name:<br>${name}</p>`,
         });
 
-        // Add or update the subscriber in Mailchimp Audience
-        const subscriberHash = email.toLowerCase().trim();
+        // Generate MD5 hash of the email for Mailchimp identification
+        const subscriberHash = crypto
+            .createHash("md5")
+            .update(email.toLowerCase().trim())
+            .digest("hex");
+
+        // Add or update subscriber in Mailchimp Audience
         const response = await mailchimp.lists.setListMember(
             AUDIENCE_ID,
-            mailchimp.utils.md5(subscriberHash),
+            subscriberHash,
             {
                 email_address: email,
                 status_if_new: "subscribed", // Add subscriber if new
@@ -80,8 +86,8 @@ exports.sendTimestaff = async (req, res) => {
         );
 
         console.log("Mailchimp Response:", response);
-        res.status(200).json({ message: "Email sent successfully" });
+        res.status(200).json(response);
     } catch (err) {
-        res.status(500).json({ error: err });
+        res.status(500).json(err);
     }
 };
