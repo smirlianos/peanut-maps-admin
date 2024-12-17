@@ -18,6 +18,14 @@ app.use(
     })
 );
 
+// Middleware to block access to .env files or other sensitive files
+app.use((req, res, next) => {
+    if (req.url.includes(".env") || req.url.includes("config")) {
+        return res.status(403).send("Access Denied");
+    }
+    next();
+});
+
 // Serve static files
 app.use(express.static("public"));
 
